@@ -26,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // If user found, verify password
     if ($user && password_verify($password, $user['password'])) {
         // Set session variable for the logged-in user
-        $_SESSION['user'] = $user['username'];
+        $_SESSION['user'] = $user['id'];  // Store the user ID in the session
+
         header("Location: dashboard.php");
         exit;
     } else {

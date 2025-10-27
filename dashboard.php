@@ -20,6 +20,10 @@ if (!isset($_SESSION['user'])) {
 
     <h2>Welcome, <?= htmlspecialchars($_SESSION['user']) ?>!</h2>
     <p>You are now logged in.</p>
+    <a href="usersearch.php">Search User</a>
+    <a href="notifications.php">Notifications</a>
+    <a href="messages.php">Messages</a>
+    <a href="settings.php">User Settings</a>
     <a href="logout.php">Logout</a>
 
 </body>
