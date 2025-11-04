@@ -8,10 +8,33 @@ if (!isset($_SESSION['user'])) {
 }
 $user_id = $_SESSION['user'];
 
-// Connect to the SQLite database using PDO
+// Handle deletion of notifications
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_notification_id'])) {
+    $notification_id = $_POST['delete_notification_id'];
+
+    try {
+        $db = new PDO('sqlite:360DB.db');
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Query to delete the notification by ID
+        $deleteQuery = "DELETE FROM notifications WHERE id = :notification_id AND user_id = :user_id";
+        $deleteStmt = $db->prepare($deleteQuery);
+        $deleteStmt->bindValue(':notification_id', $notification_id, PDO::PARAM_INT);
+        $deleteStmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        $deleteStmt->execute();
+
+        // Redirect back to the notifications page to refresh the list
+        header("Location: notifications.php");
+        exit;
+
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 try {
+    // Connect to the SQLite database using PDO
     $db = new PDO('sqlite:360DB.db');
-    // Set the PDO error mode to exception
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Query to get the user's notifications, ordered by creation date (most recent first)
@@ -33,6 +56,13 @@ try {
             echo "<p><strong>Message:</strong> " . htmlspecialchars($row['message']) . "</p>";
             echo "<p><strong>Status:</strong> " . htmlspecialchars($row['status']) . "</p>";
             echo "<p><strong>Received at:</strong> " . htmlspecialchars($row['created_at']) . "</p>";
+            
+            // Form to delete the notification
+            echo "<form action='notifications.php' method='POST'>";
+            echo "<input type='hidden' name='delete_notification_id' value='" . $row['id'] . "'>";
+            echo "<button type='submit'>Delete</button>";
+            echo "</form>";
+            
             echo "</div><hr>";
         }
     } else {
@@ -56,6 +86,7 @@ try {
     <h2>Welcome, <?= htmlspecialchars($_SESSION['user']) ?>!</h2>
     <p>You are now logged in.</p>
     <a href="usersearch.php">Search User</a>
+    <a href="view_meetings.php">Meetings</a>
     <a href="notifications.php">Notifications</a>
     <a href="messages.php">Messages</a>
     <a href="settings.php">User Settings</a>
