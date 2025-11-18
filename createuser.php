@@ -72,5 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <button type="submit">Create User</button>
 </form>
 
+<a href="login.php">Login Page</a>
+
 </body>
 </html>

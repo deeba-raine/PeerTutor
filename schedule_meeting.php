@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['meeting_date']) && is
         $db = new PDO('sqlite:360DB.db');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Insert the meeting into the database (you'll need a `meetings` table)
+        // Insert the meeting into the database
         $query = "
             INSERT INTO meetings (user_id, receiver_id, meeting_date, meeting_time)
             VALUES (:user_id, :receiver_id, :meeting_date, :meeting_time)
@@ -60,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['meeting_date']) && is
 <h2>Welcome, <?= htmlspecialchars($_SESSION['user']) ?>!</h2>
     <p>You are now logged in.</p>
     <a href="usersearch.php">Search User</a>
+    <a href="view_meetings.php">Meetings</a>
     <a href="notifications.php">Notifications</a>
     <a href="messages.php">Messages</a>
     <a href="settings.php">User Settings</a>

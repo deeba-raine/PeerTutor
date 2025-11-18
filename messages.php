@@ -101,14 +101,9 @@ try {
     $userStmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $userStmt->execute();
 
-    // Populate the dropdown with users
-    while ($row = $userStmt->fetch(PDO::FETCH_ASSOC)) {
-        echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['username']) . "</option>";
-    }
+    
 
-    echo "</select><br><br>";
-    echo "<input type='submit' value='Send Message'>";
-    echo "</form>";
+    
 
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
